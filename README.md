@@ -52,7 +52,7 @@ Dieses Dokument beschreibt die Architektur und die zugrunde liegenden Entscheidu
 
 ---
 
-# 🧠 Grundsätze
+# Grundsätze
 
 * Verständlichkeit vor Komplexität
 * Praxis vor Theorie
