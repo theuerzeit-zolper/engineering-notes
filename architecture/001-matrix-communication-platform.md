@@ -49,19 +49,57 @@ Die einzelnen Komponenten laufen containerisiert auf einer dedizierten Rocky-Lin
 
 ### Self-Hosted statt Cloud
 
-[Inhalt folgt]
+Für die Einführung einer neuen Kommunikationsplattform standen grundsätzlich sowohl Cloud-basierte Lösungen als auch selbst betriebene Systeme zur Verfügung.
+
+Microsoft Teams wurde bewusst nicht als primäre Lösung für diesen Anwendungsfall betrachtet. Obwohl Teams bereits viele Funktionen für Zusammenarbeit und Kommunikation bereitstellt, liegt der Schwerpunkt der Plattform auf einer umfassenden Collaboration-Suite und nicht auf einem einfachen Messenger-Erlebnis.
+
+Ein wesentlicher Teil der zukünftigen Nutzer arbeitete außerhalb klassischer Büroumgebungen. Insbesondere auf Baustellen waren viele Kollegen an die direkte und unkomplizierte Kommunikation über Messenger-Dienste wie WhatsApp gewöhnt. Ziel war daher eine Lösung, die den Wechsel möglichst einfach gestaltet und ohne umfangreiche Schulung akzeptiert wird.
+
+Neben der Benutzerfreundlichkeit spielten auch organisatorische und technische Aspekte eine Rolle. Durch den Self-Hosted-Betrieb verbleiben Kommunikationsdaten unter eigener Kontrolle, während gleichzeitig Abhängigkeiten von externen Cloud-Anbietern und nutzerabhängigen Lizenzmodellen reduziert werden.
+
+Die Entscheidung für Matrix wurde daher nicht ausschließlich aus technischen Gründen getroffen. Ausschlaggebend war die Kombination aus Datenhoheit, Integrationsfähigkeit und einer Benutzererfahrung, die den Einstieg für die Anwender möglichst einfach gestaltet.
 
 ### Docker auf einer dedizierten Plattform
 
-[Inhalt folgt]
+Die Plattform wurde auf einer dedizierten Rocky-Linux-Instanz betrieben. Die Wahl fiel dabei bewusst auf Rocky Linux, da die Distribution im Unternehmen bereits etabliert war und als langfristig stabiler Nachfolger von CentOS betrachtet wird.
+
+Für den Betrieb der einzelnen Komponenten wurde ein containerbasierter Ansatz gewählt. Synapse, PostgreSQL, Dex sowie weitere Dienste werden jeweils in eigenen Docker-Containern betrieben und über ein separates internes Docker-Netzwerk miteinander verbunden.
+
+Der Einsatz von Containern reduziert die Komplexität auf Betriebssystemebene erheblich. Anstatt zusätzliche Datenbanken, Laufzeitumgebungen oder Abhängigkeiten direkt auf dem Host zu installieren, bleiben die einzelnen Komponenten voneinander getrennt und können unabhängig aktualisiert oder ausgetauscht werden.
+
+Darüber hinaus bietet die Containerisierung eine zusätzliche Trennung zwischen Betriebssystem und Anwendungsdiensten. Sicherheitsprobleme oder Fehlkonfigurationen einzelner Anwendungen bleiben zunächst auf die jeweilige Komponente beschränkt und führen nicht automatisch zu einem direkten Zugriff auf das zugrunde liegende Betriebssystem. Container ersetzen dabei keine Sicherheitsmaßnahmen auf Host-Ebene, tragen jedoch zu einer klareren Trennung von Verantwortlichkeiten und Angriffsflächen bei.
+
+Bewusst wurde auf die Verteilung der Dienste auf mehrere virtuelle Maschinen verzichtet. Für die geplante Benutzerzahl bot eine einzelne Plattform ausreichend Ressourcen, während gleichzeitig Betriebsaufwand, Netzwerkkomplexität und Infrastrukturkosten gering gehalten werden konnten.
+
+Das Ergebnis ist eine kompakte und in sich geschlossene Plattform, bei der Betriebssystem, Netzwerkzugriffe und Anwendungsdienste klar voneinander getrennt sind.
 
 ### OIDC mit Dex statt LDAP-Plugin
 
-[Inhalt folgt]
+Eine zentrale Benutzerverwaltung über das bestehende Active Directory war eine grundlegende Anforderung des Projekts. Die Pflege separater Benutzerkonten für die Kommunikationsplattform kam weder aus administrativer Sicht noch hinsichtlich der Benutzerfreundlichkeit in Frage.
+
+Synapse bietet von Haus aus keine direkte LDAP-Anbindung. Historisch existierten hierfür verschiedene Erweiterungen und Plugins. Im Rahmen der Evaluierung zeigte sich jedoch schnell, dass die verfügbaren LDAP-Plugins nicht mehr aktiv gepflegt werden und mit aktuellen Synapse-Versionen nur eingeschränkt oder gar nicht mehr nutzbar sind.
+
+Gleichzeitig entwickelt sich das Matrix-Ökosystem zunehmend in Richtung moderner Authentifizierungsverfahren auf Basis von OIDC. Insbesondere mit Blick auf den Matrix Authentication Service (MAS) wurde deutlich, dass eine direkte LDAP-Integration langfristig keine zukunftsfähige Lösung darstellt.
+
+Stattdessen wurde eine Trennung zwischen Benutzerverzeichnis und Anwendung geschaffen. Das bestehende Active Directory bleibt die zentrale Quelle für Benutzer und Gruppen, während Dex als OIDC-Provider die Authentifizierung gegenüber Matrix übernimmt.
+
+Die Wahl fiel dabei nicht aufgrund eines umfangreichen Produktvergleichs auf Dex. Vielmehr überzeugte die Lösung durch ihre einfache Bereitstellung als Container, die direkte LDAP-Anbindung sowie die unkomplizierte Integration in die bestehende Architektur.
+
+Das Ergebnis ist eine Authentifizierungsarchitektur, die bestehende Verzeichnisdienste weiter nutzt, gleichzeitig aber moderne Standards verwendet und zukünftige Entwicklungen im Matrix-Umfeld berücksichtigt.
 
 ### Betrieb in einer DMZ
 
-[Inhalt folgt]
+Da die Plattform sowohl von internen als auch von externen Endgeräten genutzt werden sollte, musste ein sicherer Betrieb außerhalb des internen Unternehmensnetzes gewährleistet werden.
+
+Die Lösung wurde daher innerhalb einer dedizierten DMZ betrieben. Dadurch bleibt die Kommunikationsplattform logisch vom produktiven Unternehmensnetz getrennt, während gleichzeitig ein kontrollierter Zugriff aus dem Internet möglich ist.
+
+Zur Reduzierung der Angriffsfläche werden die eigentlichen Anwendungsdienste nicht direkt veröffentlicht. Stattdessen erfolgt die Bereitstellung der Webdienste ausschließlich über einen vorgeschalteten Reverse Proxy. Dieser übernimmt die TLS-Terminierung sowie die gezielte Veröffentlichung der erforderlichen Dienste.
+
+Die einzelnen Komponenten kommunizieren ausschließlich über interne Docker-Netzwerke. Verbindungen in das Unternehmensnetz werden auf die für den Betrieb notwendigen Dienste beschränkt, insbesondere DNS und LDAPS zur Anbindung an die bestehende Benutzerverwaltung.
+
+Administrative Zugriffe erfolgen ausschließlich über definierte Management-Systeme. Dadurch bleibt die Anzahl möglicher Zugriffswege bewusst gering und die Trennung zwischen Anwendungsbetrieb, Benutzerverkehr und Administration klar nachvollziehbar.
+
+Das Ergebnis ist eine Architektur, die externe Erreichbarkeit ermöglicht, ohne dabei die grundlegenden Sicherheits- und Segmentierungsprinzipien des Unternehmensnetzes aufzugeben.
 
 ---
 
