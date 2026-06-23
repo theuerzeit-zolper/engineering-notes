@@ -107,13 +107,23 @@ Das Ergebnis ist eine Architektur, die externe Erreichbarkeit ermöglicht, ohne 
 
 ### Komponenten
 
-- Rocky Linux
-- Docker
-- Matrix Synapse
-- PostgreSQL
-- Dex
-- Nginx Proxy Manager
-- Element Clients
+Die Plattform besteht aus mehreren voneinander getrennten Komponenten, die gemeinsam die Kommunikations- und Authentifizierungsdienste bereitstellen.
+
+Als Betriebssystem kommt Rocky Linux zum Einsatz. Die einzelnen Dienste werden containerisiert betrieben und über ein internes Docker-Netzwerk miteinander verbunden.
+
+Die zentrale Kommunikationsplattform bildet Matrix Synapse als Matrix Homeserver. Nachrichten, Räume und Benutzerdaten werden in einer PostgreSQL-Datenbank gespeichert.
+
+Für die Authentifizierung wird Dex als OIDC-Provider eingesetzt. Dex bindet das bestehende Active Directory über LDAP an und stellt die Authentifizierungsinformationen für die Matrix-Plattform bereit.
+
+Die Veröffentlichung der Webdienste erfolgt über Nginx Proxy Manager. Der Reverse Proxy übernimmt die TLS-Terminierung sowie die kontrollierte Bereitstellung der erforderlichen Dienste gegenüber dem Internet.
+
+Für den produktiven Betrieb wurde Nginx Proxy Manager nicht mit der standardmäßig vorgesehenen SQLite-Datenbank betrieben. Stattdessen kommt eine dedizierte MariaDB-Instanz innerhalb des Docker-Netzwerks zum Einsatz. Dadurch werden Datenhaltung und Anwendung voneinander getrennt und die Plattform besser auf einen langfristigen und stabilen Betrieb ausgerichtet.
+
+Als Benutzeroberfläche kommen Element Desktop, Element Mobile sowie Element Web zum Einsatz.
+
+Während die nativen Clients direkt durch die Anwender genutzt werden, wird Element Web ebenfalls innerhalb der Plattform selbst betrieben und als Container im internen Docker-Netzwerk bereitgestellt. Dadurch verbleibt auch der Zugriff auf die Weboberfläche vollständig innerhalb der eigenen Infrastruktur und erfordert keine Einbindung externer Cloud-Dienste.
+
+Die Trennung der einzelnen Komponenten ermöglicht eine klare Zuordnung von Verantwortlichkeiten und erleichtert Wartung, Updates und zukünftige Erweiterungen der Plattform.
 
 ### Datenflüsse
 
