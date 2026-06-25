@@ -147,24 +147,29 @@ Benutzer → Element Client → Synapse → PostgreSQL
 
 Externe Zugriffe erfolgen ausschließlich über den Reverse Proxy. Dieser übernimmt die Veröffentlichung der Webdienste sowie die TLS-Terminierung und bildet den zentralen Einstiegspunkt für Web-, Desktop- und Mobile-Clients.
 
-Eine detaillierte Beschreibung der Netzwerkpfade, Sicherheitszonen und Kommunikationsbeziehungen befindet sich im Dokument: 
-→ infrastructure/001-matrix-network-design.md
-
 ## Weiterführende Dokumentation
 
-Die in diesem Artikel beschriebenen Architekturentscheidungen werden in separaten Dokumenten detaillierter betrachtet.
+Dieses Dokument beschreibt die Gesamtarchitektur und die wesentlichen Designentscheidungen der Plattform.
 
-#### Netzwerkdesign
+Weitere technische Details werden in separaten Dokumenten behandelt.
 
-Die Netzwerk- und Sicherheitsarchitektur, einschließlich DMZ-Konzept, Kommunikationsbeziehungen und Zugriffspfade, wird unter folgendem Dokument beschrieben:
+### Infrastruktur und Netzwerkdesign
 
-→ infrastructure/001-matrix-network-design.md
+Beschreibung der Netzwerkarchitektur, DMZ-Integration, Docker-Netzwerke, Reverse Proxy Routing sowie der Kommunikationspfade zwischen den Komponenten.
 
-#### Identity & Access Management
+→ [001-matrix-network-design.md](../infrastructure/001-matrix-network-design.md)
 
-Die Integration des Active Directory, die OIDC-Architektur sowie die Rolle von Dex innerhalb der Authentifizierung werden unter folgendem Dokument beschrieben:
+### Identity & Access Management
 
-→ identity/001-matrix-oidc-authentication.md
+Beschreibung der Active-Directory-Integration, OIDC-Authentifizierung über Dex sowie des Identity-Mappings zwischen Active Directory und Matrix.
+
+→ [001-matrix-oidc-authentication.md](../identity/001-matrix-oidc-authentication.md)
+
+### Lessons Learned
+
+Erfahrungen, Beobachtungen und technische Erkenntnisse aus Implementierung, Pilotbetrieb und Betriebskonzept.
+
+→ [001-matrix-lessons-learned.md](../notes/001-matrix-lessons-learned.md)
 
 ---
 
