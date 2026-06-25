@@ -14,23 +14,23 @@ Stattdessen dokumentiert es, wie Systeme entworfen wurden, warum bestimmte Entsc
 
 Architekturentscheidungen, Systemdesigns und technische Abwägungen.
 
-→ [architecture](architecture)
+→ [architecture](architecture/)
 
 ---
 
 ## Identity
 
-Authentifizierung, Autorisierung, Benutzerverwaltung und die Integration zentraler Identitätssysteme.
+Authentifizierung, Autorisierung, Identitätsmanagement und die Integration zentraler Verzeichnis- und Identitätssysteme.
 
-→ [identity](identity)
+→ [identity](identity/)
 
 ---
 
 ## Infrastruktur
 
-Netzwerkdesign, DMZ-Konzepte, Systemtopologien, Docker, Linux und Betriebsplattformen.
+Netzwerkdesign, Plattformarchitekturen, Betriebsmodelle sowie Linux-, Docker- und Infrastrukturkonzepte.
 
-→ [infrastructure](infrastructure)
+→ [infrastructure](infrastructure/)
 
 ---
 
@@ -38,7 +38,7 @@ Netzwerkdesign, DMZ-Konzepte, Systemtopologien, Docker, Linux und Betriebsplattf
 
 Erkenntnisse, Beobachtungen, Lessons Learned und technische Erfahrungen aus dem Betrieb realer Systeme.
 
-→ [notes](notes)
+→ [notes](notes/)
 
 ---
 
@@ -46,16 +46,16 @@ Erkenntnisse, Beobachtungen, Lessons Learned und technische Erfahrungen aus dem 
 
 Die dokumentierten Projekte befinden sich im Verzeichnis:
 
-→ [architecture](architecture)
+→ [architecture](architecture/)
 
-Jedes Projekt beschreibt eine konkrete Architekturentscheidung oder Systemlösung und verweist bei Bedarf auf weiterführende Dokumente aus den Bereichen Infrastruktur, Identity und Betriebserfahrungen.
+Jedes Projekt beschreibt eine konkrete Architektur oder Systemlösung und verweist bei Bedarf auf weiterführende Dokumente aus den Bereichen Infrastruktur, Identity und Betriebserfahrungen.
 
 ---
 
 # Grundsätze
 
-* Verständlichkeit vor Komplexität
-* Praxis vor Theorie
-* Entscheidungen statt Produktbeschreibungen
-* Systeme statt Einzelkomponenten
-* Nachvollziehbarkeit vor Blackbox-Lösungen
+- Verständlichkeit vor Komplexität
+- Praxis vor Theorie
+- Entscheidungen statt Produktbeschreibungen
+- Systeme statt Einzelkomponenten
+- Nachvollziehbarkeit vor Blackbox-Lösungen
