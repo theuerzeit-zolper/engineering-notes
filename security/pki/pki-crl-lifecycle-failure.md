@@ -72,7 +72,7 @@ C:\Windows\System32\CertSrv\CertEnroll\
 
 ---
 
-### 2. CDP aktualisieren
+### 2. Sub-CA CDP aktualisieren
 
 HTTP (IIS):
 
