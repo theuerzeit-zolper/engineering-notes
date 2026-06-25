@@ -127,17 +127,42 @@ Die Trennung der einzelnen Komponenten ermöglicht eine klare Zuordnung von Vera
 
 ### Datenflüsse
 
-[Inhalt folgt]
+Die Plattform trennt bewusst zwischen Kommunikation, Authentifizierung und Datenhaltung. Dadurch bleiben die einzelnen Komponenten unabhängig voneinander und können bei Bedarf getrennt aktualisiert oder erweitert werden.
 
-### Netzwerkdesign
+Für den Anwender beginnt die Nutzung über einen Element Client auf Desktop-, Mobil- oder Web-Basis. Die eigentliche Kommunikation erfolgt anschließend über den Matrix Homeserver Synapse.
 
-Die detaillierte Beschreibung der Netzwerk- und Sicherheitsarchitektur befindet sich unter:
+Bei der Anmeldung werden Benutzer nicht direkt durch Synapse authentifiziert. Stattdessen wird die Authentifizierung an Dex als zentralen OIDC-Provider delegiert. Dex wiederum greift auf das bestehende Active Directory als führendes Benutzerverzeichnis zu.
+
+Der Authentifizierungsablauf lässt sich vereinfacht wie folgt darstellen:
+
+Benutzer → Element Client → Synapse → Dex → Active Directory
+
+Nach erfolgreicher Anmeldung erhält Synapse die erforderlichen Authentifizierungsinformationen und stellt dem Benutzer die Matrix-Dienste zur Verfügung.
+
+Die eigentlichen Kommunikationsdaten werden durch Synapse verarbeitet und in PostgreSQL gespeichert. Dadurch bleiben Authentifizierung und Datenhaltung voneinander getrennt.
+
+Der Kommunikationsfluss kann vereinfacht wie folgt dargestellt werden:
+
+Benutzer → Element Client → Synapse → PostgreSQL
+
+Externe Zugriffe erfolgen ausschließlich über den Reverse Proxy. Dieser übernimmt die Veröffentlichung der Webdienste sowie die TLS-Terminierung und bildet den zentralen Einstiegspunkt für Web-, Desktop- und Mobile-Clients.
+
+Eine detaillierte Beschreibung der Netzwerkpfade, Sicherheitszonen und Kommunikationsbeziehungen befindet sich im Dokument: 
+→ infrastructure/001-matrix-network-design.md
+
+## Weiterführende Dokumentation
+
+Die in diesem Artikel beschriebenen Architekturentscheidungen werden in separaten Dokumenten detaillierter betrachtet.
+
+#### Netzwerkdesign
+
+Die Netzwerk- und Sicherheitsarchitektur, einschließlich DMZ-Konzept, Kommunikationsbeziehungen und Zugriffspfade, wird unter folgendem Dokument beschrieben:
 
 → infrastructure/001-matrix-network-design.md
 
-### Identity & Access Management
+#### Identity & Access Management
 
-Die detaillierte Beschreibung der Authentifizierungsarchitektur befindet sich unter:
+Die Integration des Active Directory, die OIDC-Architektur sowie die Rolle von Dex innerhalb der Authentifizierung werden unter folgendem Dokument beschrieben:
 
 → identity/001-matrix-oidc-authentication.md
 
@@ -145,18 +170,38 @@ Die detaillierte Beschreibung der Authentifizierungsarchitektur befindet sich un
 
 ## Ergebnis
 
-Die Plattform erfüllt die definierten Anforderungen hinsichtlich Datenhoheit, Benutzerfreundlichkeit und Integration in die bestehende Unternehmensumgebung.
+Mit der beschriebenen Architektur konnte eine eigenständig betriebene Kommunikationsplattform geschaffen werden, die die ursprünglich definierten Anforderungen erfüllt.
 
-Durch die Nutzung offener Standards und den vollständigen Eigenbetrieb konnte eine langfristig wartbare Kommunikationsplattform geschaffen werden.
+Die Lösung ermöglicht eine zentrale und plattformübergreifende Kommunikation über Desktop-, Web- und Mobile-Clients, ohne dabei auf externe Cloud-Dienste angewiesen zu sein. Gleichzeitig bleibt die Benutzerverwaltung vollständig in die bestehende Active-Directory-Infrastruktur integriert.
+
+Durch die Kombination aus Matrix, OIDC-basierter Authentifizierung und einer containerisierten Betriebsplattform entstand eine Lösung, die sowohl die Anforderungen an Datenhoheit als auch an Benutzerfreundlichkeit berücksichtigt.
+
+Zum Zeitpunkt der Erstellung dieses Artikels befindet sich die Plattform in einer Pilotphase. Bereits in dieser frühen Betriebsphase werden unterschiedliche Nutzungsszenarien abgedeckt, darunter Büroarbeitsplätze, mobile Endgeräte, Home-Office-Arbeitsplätze sowie Benutzer aus angebundenen Außenstellen.
+
+Gerade diese Vielfalt der Testumgebungen erwies sich als wertvoll. Mehrere infrastrukturelle Randbedingungen, darunter DNS- und Routing-Themen im Zusammenspiel von DMZ, VPN-Clients und Standortvernetzungen, wurden erst durch den praktischen Einsatz sichtbar und konnten bereits während der Pilotphase identifiziert und behoben werden.
+
+Die Anzahl der Pilotanwender wächst kontinuierlich. Die bisherigen Erfahrungen bestätigen die grundsätzliche Tragfähigkeit der gewählten Architektur und liefern gleichzeitig wichtige Erkenntnisse für den weiteren Ausbau der Plattform.
 
 ---
 
 ## Rückblick
 
-[Inhalt folgt]
+Mehrere zentrale Architekturentscheidungen haben sich bereits während der Pilotphase als sinnvoll erwiesen. Insbesondere die Trennung von Authentifizierung, Anwendung und Datenhaltung erleichterte sowohl den Betrieb als auch die Fehlersuche während der Inbetriebnahme.
+
+Die Entscheidung für OIDC und Dex erwies sich als zukunftsfähiger Ansatz. Während ältere LDAP-Integrationen für Synapse nur eingeschränkt nutzbar waren, ließ sich die Authentifizierung über standardisierte Schnittstellen sauber in die bestehende Active-Directory-Umgebung integrieren.
+
+Gleichzeitig zeigte das Projekt erneut, dass viele Herausforderungen nicht durch die eigentliche Anwendung entstehen, sondern durch die Integration in bestehende Infrastrukturen. Insbesondere die unterschiedlichen Zugriffswege über LAN, Internet, VPN und Standortvernetzungen führten zu Anforderungen, die erst im praktischen Einsatz sichtbar wurden.
+
+Die Pilotphase erwies sich dabei als besonders wertvoll. Durch die Einbindung unterschiedlicher Benutzergruppen konnten verschiedene Nutzungsszenarien frühzeitig getestet und infrastrukturelle Randbedingungen identifiziert werden, bevor ein größerer Rollout erfolgte.
+
+Rückblickend bestätigte sich die Entscheidung, zunächst eine tragfähige Architektur aufzubauen und diese anschließend schrittweise unter realen Bedingungen zu validieren.
 
 ---
 
 ## Fazit
 
-[Inhalt folgt]
+Matrix hat sich für diesen Anwendungsfall als geeignete Grundlage für eine unternehmensinterne Kommunikationsplattform erwiesen. Durch den vollständigen Eigenbetrieb, die Integration in bestehende Verzeichnisdienste und die Nutzung offener Standards konnte eine Lösung geschaffen werden, die sowohl technische als auch organisatorische Anforderungen berücksichtigt.
+
+Besonders wichtig war dabei nicht die Auswahl einzelner Produkte, sondern das Zusammenspiel der Architekturentscheidungen. Self-Hosted-Betrieb, containerisierte Bereitstellung, OIDC-basierte Authentifizierung und die konsequente Netzsegmentierung ergänzen sich zu einer Plattform, die sich mit überschaubarem Aufwand betreiben und weiterentwickeln lässt.
+
+Das Projekt befindet sich weiterhin in Entwicklung. Die bisherigen Erfahrungen aus der Pilotphase zeigen jedoch, dass der gewählte Ansatz tragfähig ist und eine solide Grundlage für den weiteren Ausbau bietet.
