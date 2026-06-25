@@ -44,11 +44,11 @@ Erkenntnisse, Beobachtungen, Lessons Learned und technische Erfahrungen aus dem 
 
 # Einstieg
 
-Wenn du nur ein Dokument lesen möchtest:
+Die dokumentierten Projekte befinden sich im Verzeichnis:
 
-→ `architecture/001-matrix-communication-platform.md`
+→ [architecture](architecture)
 
-Dieses Dokument beschreibt die Architektur und die zugrunde liegenden Entscheidungen einer selbst betriebenen Matrix-Plattform im Unternehmenseinsatz.
+Jedes Projekt beschreibt eine konkrete Architekturentscheidung oder Systemlösung und verweist bei Bedarf auf weiterführende Dokumente aus den Bereichen Infrastruktur, Identity und Betriebserfahrungen.
 
 ---
 
