@@ -14,7 +14,7 @@ Stattdessen dokumentiert es, wie Systeme entworfen wurden, warum bestimmte Entsc
 
 Architekturentscheidungen, Systemdesigns und technische Abwägungen.
 
-→ `/architecture`
+→ [architecture](architecture)
 
 ---
 
@@ -22,7 +22,7 @@ Architekturentscheidungen, Systemdesigns und technische Abwägungen.
 
 Authentifizierung, Autorisierung, Benutzerverwaltung und die Integration zentraler Identitätssysteme.
 
-→ `/identity`
+→ [identity](identity)
 
 ---
 
@@ -30,7 +30,7 @@ Authentifizierung, Autorisierung, Benutzerverwaltung und die Integration zentral
 
 Netzwerkdesign, DMZ-Konzepte, Systemtopologien, Docker, Linux und Betriebsplattformen.
 
-→ `/infrastructure`
+→ [infrastructure](infrastructure)
 
 ---
 
@@ -38,7 +38,7 @@ Netzwerkdesign, DMZ-Konzepte, Systemtopologien, Docker, Linux und Betriebsplattf
 
 Erkenntnisse, Beobachtungen, Lessons Learned und technische Erfahrungen aus dem Betrieb realer Systeme.
 
-→ `/notes`
+→ [notes](notes)
 
 ---
 
