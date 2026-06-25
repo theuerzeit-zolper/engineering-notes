@@ -37,8 +37,6 @@ Besonders relevant war die Möglichkeit, Identitäts- und Authentifizierungsproz
 
 ## Architekturüberblick
 
-[Architekturdiagramm folgt]
-
 Die Plattform wurde als eigenständige Kommunikationslösung innerhalb der DMZ betrieben.
 
 Die einzelnen Komponenten laufen containerisiert auf einer dedizierten Rocky-Linux-Plattform und kommunizieren über ein internes Docker-Netzwerk. Externe Zugriffe erfolgen ausschließlich über einen Reverse Proxy.
