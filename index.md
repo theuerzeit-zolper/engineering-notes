@@ -12,3 +12,4 @@ Architektur und Umsetzung einer selbst betriebenen Matrix-Plattform mit Docker, 
 - [Infrastruktur](infrastructure/matrix-network-design.md)
 - [Identity](identity/matrix-oidc-authentication.md)
 - [Lessons Learned](notes/matrix-lessons-learned.md)
+
