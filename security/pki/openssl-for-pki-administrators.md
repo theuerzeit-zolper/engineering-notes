@@ -424,9 +424,9 @@ Dieses Format ist besonders wichtig für Windows-Umgebungen.
 
 ---
 
-# Wichtige Unterschiede
+## Wichtige Unterschiede
 
-## PEM vs DER
+### PEM vs DER
 
 | PEM               | DER            |
 | ----------------- | -------------- |
@@ -437,7 +437,7 @@ Dieses Format ist besonders wichtig für Windows-Umgebungen.
 
 ---
 
-## PKCS#7 vs PKCS#12
+### PKCS#7 vs PKCS#12
 
 | PKCS#7               | PKCS#12                  |
 | -------------------- | ------------------------ |
@@ -447,9 +447,9 @@ Dieses Format ist besonders wichtig für Windows-Umgebungen.
 
 ---
 
-# Typische Praxisprobleme
+## Typische Praxisprobleme
 
-## Problem 1: Private Key fehlt
+### Problem 1: Private Key fehlt
 
 Ursache:
 
@@ -461,7 +461,7 @@ Lösung:
 
 ---
 
-## Problem 2: Zertifikat lässt sich nicht importieren
+### Problem 2: Zertifikat lässt sich nicht importieren
 
 Ursache:
 
@@ -473,7 +473,7 @@ Lösung:
 
 ---
 
-## Problem 3: IIS akzeptiert Datei nicht
+### Problem 3: IIS akzeptiert Datei nicht
 
 Ursache:
 
