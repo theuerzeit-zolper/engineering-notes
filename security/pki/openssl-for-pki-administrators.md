@@ -485,4 +485,155 @@ Lösung:
 
 ---
 
+# Private Keys
+
+Private Keys sind der sicherheitskritischste Bestandteil einer Public Key Infrastructure (PKI).
+
+Sie werden verwendet, um TLS-Verbindungen zu authentifizieren und Daten zu entschlüsseln. Der Private Key muss dabei immer geschützt bleiben und darf ein System in der Regel niemals verlassen.
+
+---
+
+## Grundlagen
+
+Ein Private Key wird immer lokal erzeugt und bildet die Grundlage für:
+
+* TLS Server-Authentifizierung
+* Digitale Signaturen
+* Erstellung eines Certificate Signing Requests (CSR)
+* Entschlüsselung von TLS-Verbindungen (Server-seitig)
+
+Aus einem Private Key wird der zugehörige Public Key abgeleitet.
+
+---
+
+## RSA Private Key erstellen
+
+Der klassische RSA Private Key wird häufig für TLS-Zertifikate verwendet.
+
+### Befehl
+
+```bash
+openssl genrsa -out private.key 2048
+```
+
+### Alternative (moderne Variante)
+
+```bash
+openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048
+```
+
+---
+
+## Private Key anzeigen
+
+```bash
+openssl pkey -in private.key -text -noout
+```
+
+---
+
+## Private Key schützen (Passphrase)
+
+Ein Private Key kann mit einer Passphrase verschlüsselt gespeichert werden.
+
+### Beispiel
+
+```bash
+openssl genpkey -algorithm RSA -aes256 -out private.key -pkeyopt rsa_keygen_bits:2048
+```
+
+Vorteil:
+
+* zusätzlicher Schutz bei Datei-Diebstahl
+
+Nachteil:
+
+* automatisierte Services benötigen zusätzliche Handhabung
+
+---
+
+## Passphrase entfernen
+
+Für Systeme ohne interaktive Entschlüsselung (z. B. NGINX, HAProxy) wird die Passphrase häufig entfernt.
+
+```bash
+openssl pkey -in private.key -out private_unencrypted.key
+```
+
+---
+
+## Private Key prüfen
+
+### Struktur prüfen
+
+```bash
+openssl pkey -in private.key -check
+```
+
+### Details anzeigen
+
+```bash
+openssl pkey -in private.key -text -noout
+```
+
+---
+
+## Public Key aus Private Key extrahieren
+
+```bash
+openssl pkey -in private.key -pubout
+```
+
+---
+
+## Häufige Probleme
+
+### Problem 1: Key passt nicht zum Zertifikat
+
+Ursache:
+
+* falscher Private Key verwendet
+
+Prüfung:
+
+```bash
+openssl x509 -noout -modulus -in cert.crt | openssl md5
+openssl rsa -noout -modulus -in private.key | openssl md5
+```
+
+Wenn die Hashes unterschiedlich sind, gehört der Key nicht zum Zertifikat.
+
+---
+
+### Problem 2: “unable to load Private Key”
+
+Ursache:
+
+* falsches Format (PEM vs DER)
+* beschädigte Datei
+* falsche Passphrase
+
+---
+
+### Problem 3: Key ist verschlüsselt, Service startet nicht
+
+Ursache:
+
+* Passphrase erforderlich, aber nicht verfügbar
+
+Lösung:
+
+* unverschlüsselten Key verwenden oder Secure Vault Lösung einsetzen
+
+---
+
+## Best Practices
+
+* Private Keys immer lokal erzeugen
+* RSA mindestens 2048 Bit (besser 3072 Bit bei neuen Systemen)
+* Private Key niemals übertragen, wenn vermeidbar
+* Dateirechte restriktiv setzen (Linux: 600)
+* Backup nur verschlüsselt speichern
+
+---
 
