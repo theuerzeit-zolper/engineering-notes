@@ -209,7 +209,7 @@ Private Key      Certificate Chain
 
 ---
 
-## Zertifikatsformate
+# Zertifikatsformate
 
 Zertifikate und Schlüssel können in unterschiedlichen Formaten gespeichert werden. Diese unterscheiden sich hauptsächlich in der Darstellung (Text oder Binär), dem Inhalt (nur Zertifikat oder inkl. Private Key) und der Zielplattform.
 
@@ -217,7 +217,7 @@ Ein korrektes Verständnis der Formate ist entscheidend, da viele Importfehler i
 
 ---
 
-# Übersicht der wichtigsten Formate
+## Übersicht der wichtigsten Formate
 
 | Format              | Typ           | Inhalt                   | Typische Nutzung              |
 | ------------------- | ------------- | ------------------------ | ----------------------------- |
@@ -228,9 +228,9 @@ Ein korrektes Verständnis der Formate ist entscheidend, da viele Importfehler i
 
 ---
 
-# PEM (Privacy Enhanced Mail)
+## PEM (Privacy Enhanced Mail)
 
-## Beschreibung
+### Beschreibung
 
 PEM ist das am weitesten verbreitete Zertifikatsformat in Linux- und OpenSSL-Umgebungen.
 
@@ -250,14 +250,14 @@ oder:
 -----END PRIVATE KEY-----
 ```
 
-## Eigenschaften
+### Eigenschaften
 
 * Textbasiert (lesbar)
 * Kann mehrere Zertifikate enthalten (Chain)
 * Kann Private Keys enthalten
 * Standardformat für OpenSSL
 
-## Typische Dateiendungen
+### Typische Dateiendungen
 
 * .pem
 * .crt
@@ -272,7 +272,7 @@ Ein häufig übersehener Vorteil des PEM-Formats ist die Möglichkeit, mehrere Z
 
 Damit kann eine komplette Certificate Chain abgebildet werden.
 
-## Aufbau einer PEM Chain
+### Aufbau einer PEM Chain
 
 Eine PEM-Datei kann mehrere Zertifikate hintereinander enthalten:
 
@@ -290,7 +290,7 @@ Eine PEM-Datei kann mehrere Zertifikate hintereinander enthalten:
 -----END CERTIFICATE-----
 ```
 
-## Reihenfolge
+### Reihenfolge
 
 Die Reihenfolge ist dabei entscheidend:
 
@@ -300,7 +300,7 @@ Die Reihenfolge ist dabei entscheidend:
 
 ---
 
-## Unterschied zu PKCS#7
+### Unterschied zu PKCS#7
 
 | PEM Chain                     | PKCS#7                    |
 | ----------------------------- | ------------------------- |
@@ -311,7 +311,7 @@ Die Reihenfolge ist dabei entscheidend:
 
 ---
 
-## Typische Anwendung
+### Typische Anwendung
 
 PEM Chains werden häufig verwendet für:
 
@@ -323,7 +323,7 @@ PEM Chains werden häufig verwendet für:
 
 ---
 
-## Beispiel aus der Praxis
+### Beispiel aus der Praxis
 
 Viele Certificate Authorities liefern Zertifikate getrennt aus:
 
@@ -338,7 +338,7 @@ cat server.crt intermediate.crt > fullchain.pem
 
 ---
 
-## Hinweis
+### Hinweis
 
 PKCS#12-Dateien (.pfx/.p12) enthalten intern ebenfalls eine Zertifikatskette.
 
@@ -346,22 +346,22 @@ Beim Export nach PEM muss diese Kette jedoch häufig manuell korrekt zusammenges
 
 ---
 
-# DER (Distinguished Encoding Rules)
+## DER (Distinguished Encoding Rules)
 
-## Beschreibung
+### Beschreibung
 
 DER ist die binäre Variante eines Zertifikats.
 
 Im Gegensatz zu PEM ist DER nicht lesbar und wird häufig in Java- oder Hardware-Systemen verwendet.
 
-## Eigenschaften
+### Eigenschaften
 
 * Binärformat
 * Enthält nur ein einzelnes Zertifikat
 * Kein Private Key
 * Nicht direkt lesbar
 
-## Typische Dateiendungen
+### Typische Dateiendungen
 
 * .der
 * .cer
@@ -369,9 +369,9 @@ Im Gegensatz zu PEM ist DER nicht lesbar und wird häufig in Java- oder Hardware
 
 ---
 
-# PKCS#7
+## PKCS#7
 
-## Beschreibung
+### Beschreibung
 
 PKCS#7 ist ein Containerformat für Zertifikatsketten.
 
@@ -380,42 +380,42 @@ Es enthält typischerweise:
 * Serverzertifikat
 * Intermediate-Zertifikate
 
-## Wichtige Einschränkung
+### Wichtige Einschränkung
 
-👉 PKCS#7 enthält **keinen Private Key**
+PKCS#7 enthält **keinen Private Key**
 
-## Typische Dateiendungen
+### Typische Dateiendungen
 
 * .p7b
 * .p7c
 
-## Typische Verwendung
+### Typische Verwendung
 
 * Windows Certificate Import
 * CA-Kettenübertragung
 
 ---
 
-# PKCS#12
+## PKCS#12
 
-## Beschreibung
+### Beschreibung
 
 PKCS#12 ist ein verschlüsselter Container, der sowohl Zertifikate als auch den zugehörigen Private Key enthalten kann.
 
 Dieses Format ist besonders wichtig für Windows-Umgebungen.
 
-## Eigenschaften
+### Eigenschaften
 
 * Enthält Zertifikat + Private Key
 * Kann durch Passwort geschützt werden
 * Plattformübergreifend nutzbar
 
-## Typische Dateiendungen
+### Typische Dateiendungen
 
 * .pfx
 * .p12
 
-## Typische Verwendung
+### Typische Verwendung
 
 * IIS
 * Microsoft Exchange
