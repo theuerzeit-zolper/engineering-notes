@@ -20,7 +20,7 @@ Die neue Distribution sollte folgende Anforderungen erfüllen:
 - Hohe Kompatibilität zu RHEL
 - Planbare Release- und Supportzyklen
 - Enterprise-fähig
-- Große Community und Dokumentation
+- Große Community und umfangreiche Dokumentation
 - Kostenfrei
 - Geeignet für private und berufliche Infrastruktur
 
@@ -38,17 +38,13 @@ Technisch sprach wenig dagegen. Aus strategischer Sicht wollte ich jedoch eine L
 
 AlmaLinux entstand nahezu zeitgleich mit Rocky Linux und verfolgte ein ähnliches Ziel.
 
-Zum Zeitpunkt meiner Entscheidung befanden sich beide Projekte noch am Anfang. Letztlich fiel meine Wahl auf Rocky Linux, da das Projekt von Gregory Kurtzer – einem Mitgründer des ursprünglichen CentOS-Projekts – initiiert wurde und sich früh einer unabhängigen Organisation anschloss.
-
-### Linux Mint
-
-Linux Mint war ebenfalls eine bekannte und etablierte Distribution.
-
-Da der Fokus jedoch auf Desktop-Systemen liegt, war Mint für den Einsatz als Enterprise-Serverplattform keine geeignete Alternative.
+Zum Zeitpunkt meiner Entscheidung befanden sich beide Projekte noch am Anfang. Letztlich fiel meine Wahl auf Rocky Linux, da mich die Ausrichtung und Organisation des Projekts mehr überzeugte.
 
 ## Warum Rocky Linux?
 
 Rocky Linux wurde mit dem Ziel gegründet, wieder eine freie, stabile und RHEL-kompatible Enterprise-Distribution bereitzustellen.
+
+Besonders überzeugt hat mich, dass Rocky Linux von Gregory Kurtzer, einem Mitgründer von CentOS, ins Leben gerufen wurde. Dadurch entstand für mich der Eindruck, dass die ursprüngliche Idee von CentOS in einem unabhängigen Community-Projekt fortgeführt werden sollte.
 
 Für meine Anforderungen erfüllte Rocky Linux alle wichtigen Kriterien:
 
@@ -60,7 +56,7 @@ Für meine Anforderungen erfüllte Rocky Linux alle wichtigen Kriterien:
 - Gute Grundlage für den Aufbau von Enterprise-Know-how
 - Einheitliche Plattform für sämtliche Infrastrukturdienste
 
-Rocky Linux übernimmt damit für meine Infrastruktur die Rolle, die zuvor CentOS hatte.
+Damit übernimmt Rocky Linux für meine Infrastruktur die Rolle, die zuvor CentOS hatte.
 
 ## Nachteile
 
@@ -84,7 +80,7 @@ Sofern ein Dienst keine besonderen Anforderungen stellt, basieren neue virtuelle
 
 Architekturentscheidungen sind keine unumstößlichen Wahrheiten.
 
-Diese Entscheidung muss überprüft werden, insbesondere wenn:
+Diese Entscheidung sollte überprüft werden, insbesondere wenn:
 
 - sich die Ausrichtung von Rocky Linux grundlegend verändert,
 - die RHEL-Kompatibilität nicht mehr gewährleistet ist,
