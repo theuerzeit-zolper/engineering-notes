@@ -19,7 +19,7 @@ Die neue Distribution sollte folgende Anforderungen erfüllen:
 - Langfristige Stabilität
 - Hohe Kompatibilität zu RHEL
 - Planbare Release- und Supportzyklen
-- Enterprise-Fokus
+- Enterprise-fähig
 - Große Community und Dokumentation
 - Kostenfrei
 - Geeignet für private und berufliche Infrastruktur
@@ -52,7 +52,7 @@ Rocky Linux wurde mit dem Ziel gegründet, wieder eine freie, stabile und RHEL-k
 
 Für meine Anforderungen erfüllte Rocky Linux alle wichtigen Kriterien:
 
-- Enterprise-orientierte Distribution
+- Enterprise-fähige Distribution
 - Hohe Kompatibilität zu RHEL
 - Community-getragene Entwicklung
 - Langfristige Stabilität
