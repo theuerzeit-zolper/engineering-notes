@@ -1,0 +1,2 @@
+# Rocky Linux Basic Install
+
