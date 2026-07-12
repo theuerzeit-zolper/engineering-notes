@@ -46,14 +46,14 @@ Rocky Linux wurde mit dem Ziel gegründet, wieder eine freie, stabile und RHEL-k
 
 Besonders überzeugt hat mich, dass Rocky Linux von Gregory Kurtzer, einem Mitgründer von CentOS, ins Leben gerufen wurde. Dadurch entstand für mich der Eindruck, dass die ursprüngliche Idee von CentOS in einem unabhängigen Community-Projekt fortgeführt werden sollte.
 
-Für meine Anforderungen erfüllte Rocky Linux alle wichtigen Kriterien:
+Für meine Anforderungen erfüllt Rocky Linux alle wichtigen Kriterien:
 
 - Enterprise-fähige Distribution
 - Hohe Kompatibilität zu RHEL
 - Community-getragene Entwicklung
 - Langfristige Stabilität
 - Umfangreiche Dokumentation
-- Gute Grundlage für den Aufbau von Enterprise-Know-how
+- Gute Grundlage für den Aufbau von Enterprise-Kompetenz
 - Einheitliche Plattform für sämtliche Infrastrukturdienste
 
 Damit übernimmt Rocky Linux für meine Infrastruktur die Rolle, die zuvor CentOS hatte.
