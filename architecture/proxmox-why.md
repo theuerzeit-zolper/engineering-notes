@@ -15,8 +15,8 @@ Ziel war daher nicht, eine Enterprise-Infrastruktur im Maßstab nachzubauen. Zie
 Die Virtualisierungsplattform sollte folgende Anforderungen erfüllen:
 
 - Keine proprietären Lizenzkosten
-- Hochverfügbarkeit zentraler Infrastrukturdienste
-- Live Migration zwischen mehreren Hosts
+- Hohe Verfügbarkeit zentraler Infrastrukturdienste mit möglichst kurzen Wartungs- und Ausfallzeiten
+- Migration virtueller Maschinen zwischen mehreren Hosts mit möglichst kurzen Unterbrechungen
 - Zentrale Administration
 - Automatisierte Backups
 - Betrieb auf handelsüblicher Hardware
@@ -47,15 +47,17 @@ Proxmox VE erfüllt für meine Anforderungen die wesentlichen Eigenschaften eine
 
 Entscheidend war dabei nicht die Anzahl der verfügbaren Funktionen, sondern die Möglichkeit, bewährte Architekturprinzipien aus Enterprise-Umgebungen auch im Homelab umzusetzen.
 
-Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage sowie einer regelmäßigen Replikation der virtuellen Maschinen. Ergänzt wird die Plattform durch einen separaten Proxmox Backup Server auf der QNAP.
+Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage. ZFS bietet dabei Funktionen wie Snapshots, Integritätsprüfungen und bildet die Grundlage für die regelmäßige Replikation der virtuellen Maschinen. Ein separates QDevice stellt das Cluster-Quorum sicher. Ergänzt wird die Plattform durch einen Proxmox Backup Server auf der QNAP.
+
+Durch die Replikation können virtuelle Maschinen für Wartungsarbeiten mit nur kurzen Unterbrechungen auf den zweiten Host verschoben werden, ohne auf Shared Storage angewiesen zu sein.
 
 Besonders wichtig ist dabei die konsequente Trennung der Verantwortlichkeiten.
 
 Proxmox stellt ausschließlich die Virtualisierungsschicht bereit. Anwendungen werden nicht auf dem Hypervisor betrieben, sondern grundsätzlich in eigenen virtuellen Maschinen.
 
-Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Aktualisierungen des Proxmox-Hosts beeinflussen weder die Gastbetriebssysteme noch deren Lebenszyklus.
+Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Der Lebenszyklus der Gastbetriebssysteme ist vom Lebenszyklus des Hypervisors getrennt, auch wenn Wartungsarbeiten am Host Migrationen oder geplante Neustarts der virtuellen Maschinen erfordern können.
 
-Ich verzichte bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, bieten dafür jedoch eine vollständige Trennung vom Hostsystem und eine einheitliche Plattform für sämtliche Server.
+Für meine Infrastruktur verzichte ich bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, bieten mir jedoch eine vollständige Trennung vom Hostsystem und eine einheitliche Plattform für sämtliche Server.
 
 ## Nachteile
 
@@ -64,7 +66,7 @@ Auch diese Architektur bringt bewusste Kompromisse mit sich.
 - Zwei Hosts verursachen mehr Betriebs- und Wartungsaufwand als ein einzelner Server.
 - Virtuelle Maschinen benötigen mehr Ressourcen als Linux-Container.
 - Ein Zwei-Node-Cluster erreicht nicht die Ausfallsicherheit größerer Enterprise-Cluster.
-- Hochverfügbarkeit ersetzt keine Datensicherung und macht ein separates Backup-Konzept weiterhin erforderlich.
+- Die Replikation dient der Verfügbarkeit und ersetzt keine Datensicherung. Diese Aufgabe übernimmt ein separater Proxmox Backup Server.
 
 Diese Nachteile sind für meine Anforderungen akzeptabel, da Wartbarkeit, Stabilität und Reproduzierbarkeit höher bewertet werden als eine möglichst ressourcensparende Infrastruktur.
 
@@ -74,7 +76,7 @@ Proxmox VE bildet die Standardplattform für die Virtualisierung meiner Infrastr
 
 Produktive Dienste werden ausschließlich als virtuelle Maschinen betrieben. Linux-Container verwende ich bewusst nicht, um eine einheitliche Betriebsplattform auf Basis von Rocky Linux beizubehalten und den Hypervisor klar von den Workloads zu trennen.
 
-Der Cluster stellt sicher, dass zentrale Infrastrukturdienste auch während Wartungsarbeiten oder beim Ausfall eines Hosts möglichst ohne längere Unterbrechung verfügbar bleiben.
+Der Cluster ermöglicht es, zentrale Infrastrukturdienste auch während geplanter Wartungsarbeiten und beim Ausfall eines Hosts mit möglichst kurzen Unterbrechungen weiter zu betreiben.
 
 Dadurch lassen sich Dienste wie Pi-hole oder andere zentrale Infrastrukturkomponenten unabhängig von der zugrunde liegenden Hardware betreiben und Wartungsarbeiten planbar durchführen.
 
