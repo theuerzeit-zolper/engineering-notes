@@ -4,7 +4,7 @@
 
 ## Hintergrund
 
-Beruflich arbeite ich täglich mit einer VMware-Infrastruktur bestehend aus mehreren Hosts, zentralem Management und Funktionen wie Live Migration. Diese Betriebsweise hat meine Erwartungen an eine Virtualisierungsplattform geprägt.
+Beruflich arbeite ich täglich mit einer VMware-Infrastruktur bestehend aus mehreren Hosts, zentralem Management und der Möglichkeit, virtuelle Maschinen zwischen Hosts zu verschieben. Diese Betriebsweise hat meine Erwartungen an eine Virtualisierungsplattform geprägt.
 
 Auch im Homelab sollten zentrale Infrastrukturdienste nicht von einem einzelnen Host abhängig sein. Gleichzeitig sollte die Plattform wirtschaftlich betrieben werden können und keine laufenden Lizenzkosten verursachen.
 
@@ -49,15 +49,15 @@ Entscheidend war dabei nicht die Anzahl der verfügbaren Funktionen, sondern die
 
 Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage. ZFS bietet dabei Funktionen wie Snapshots, Integritätsprüfungen und bildet die Grundlage für die regelmäßige Replikation der virtuellen Maschinen. Ein separates QDevice stellt das Cluster-Quorum sicher. Ergänzt wird die Plattform durch einen Proxmox Backup Server auf der QNAP.
 
-Durch die Replikation können virtuelle Maschinen für Wartungsarbeiten mit nur kurzen Unterbrechungen auf den zweiten Host verschoben werden, ohne auf Shared Storage angewiesen zu sein.
+Durch die regelmäßige Replikation stehen aktuelle Kopien der virtuellen Maschinen auf dem zweiten Host zur Verfügung. Dadurch lassen sich Wartungsarbeiten mit vergleichsweise kurzen Unterbrechungen durchführen, ohne auf Shared Storage angewiesen zu sein.
 
 Besonders wichtig ist dabei die konsequente Trennung der Verantwortlichkeiten.
 
-Proxmox stellt ausschließlich die Virtualisierungsschicht bereit. Anwendungen werden nicht auf dem Hypervisor betrieben, sondern grundsätzlich in eigenen virtuellen Maschinen.
+In meiner Infrastruktur übernimmt Proxmox ausschließlich die Virtualisierungsschicht. Anwendungen werden grundsätzlich nicht auf dem Hypervisor betrieben, sondern in eigenen virtuellen Maschinen.
 
 Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Der Lebenszyklus der Gastbetriebssysteme ist vom Lebenszyklus des Hypervisors getrennt, auch wenn Wartungsarbeiten am Host Migrationen oder geplante Neustarts der virtuellen Maschinen erfordern können.
 
-Für meine Infrastruktur verzichte ich bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, bieten mir jedoch eine vollständige Trennung vom Hostsystem und eine einheitliche Plattform für sämtliche Server.
+Für meine Infrastruktur verzichte ich bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, bieten mir jedoch eine stärkere Isolation gegenüber dem Hostsystem als Linux-Container und eine einheitliche Plattform für sämtliche Server.
 
 ## Nachteile
 
