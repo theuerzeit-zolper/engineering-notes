@@ -47,7 +47,7 @@ Proxmox VE erfüllt für meine Anforderungen die wesentlichen Eigenschaften eine
 
 Entscheidend war dabei nicht die Anzahl der verfügbaren Funktionen, sondern die Möglichkeit, bewährte Architekturprinzipien aus Enterprise-Umgebungen auch im Homelab umzusetzen.
 
-Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage. ZFS bietet dabei Funktionen wie Snapshots, Integritätsprüfungen und bildet die Grundlage für die regelmäßige Replikation der virtuellen Maschinen. Ein separates QDevice stellt das Cluster-Quorum sicher. Ergänzt wird die Plattform durch einen Proxmox Backup Server auf der QNAP.
+Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage. ZFS bietet dabei Funktionen wie Snapshots, Integritätsprüfungen und bildet die Grundlage für die regelmäßige Replikation der virtuellen Maschinen. Ein separates QDevice stellt das Cluster-Quorum sicher und verhindert bei einem Zwei-Node-Cluster den Verlust des Quorums beim Ausfall eines Hosts. Ergänzt wird die Plattform durch einen Proxmox Backup Server auf der QNAP.
 
 Durch die regelmäßige Replikation stehen aktuelle Kopien der virtuellen Maschinen auf dem zweiten Host zur Verfügung. Dadurch lassen sich Wartungsarbeiten mit vergleichsweise kurzen Unterbrechungen durchführen, ohne auf Shared Storage angewiesen zu sein.
 
@@ -55,7 +55,7 @@ Besonders wichtig ist dabei die konsequente Trennung der Verantwortlichkeiten.
 
 In meiner Infrastruktur übernimmt Proxmox ausschließlich die Virtualisierungsschicht. Anwendungen werden grundsätzlich nicht auf dem Hypervisor betrieben, sondern in eigenen virtuellen Maschinen.
 
-Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Der Lebenszyklus der Gastbetriebssysteme ist vom Lebenszyklus des Hypervisors getrennt, auch wenn Wartungsarbeiten am Host Migrationen oder geplante Neustarts der virtuellen Maschinen erfordern können.
+Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Die Gründe für diese Entscheidung werden in der separaten Architekturentscheidung **„Warum Rocky Linux?“** beschrieben. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Der Lebenszyklus der Gastbetriebssysteme ist vom Lebenszyklus des Hypervisors getrennt, auch wenn Wartungsarbeiten am Host Migrationen oder geplante Neustarts der virtuellen Maschinen erfordern können.
 
 Für meine Infrastruktur verzichte ich bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, bieten mir jedoch eine stärkere Isolation gegenüber dem Hostsystem als Linux-Container und eine einheitliche Plattform für sämtliche Server.
 
