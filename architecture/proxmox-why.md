@@ -14,13 +14,13 @@ Ziel war daher nicht, eine Enterprise-Infrastruktur im Maßstab nachzubauen. Zie
 
 Die Virtualisierungsplattform sollte folgende Anforderungen erfüllen:
 
-- Keine proprietären Lizenzkosten
+- Keine Lizenzkosten
 - Hohe Verfügbarkeit zentraler Infrastrukturdienste mit möglichst kurzen Wartungs- und Ausfallzeiten
-- Migration virtueller Maschinen zwischen mehreren Hosts mit möglichst kurzen Unterbrechungen
+- Geplantes Verschieben virtueller Maschinen zwischen mehreren Hosts mit möglichst kurzen Unterbrechungen
 - Zentrale Administration
 - Automatisierte Backups
 - Betrieb auf handelsüblicher Hardware
-- Klare Trennung zwischen Hypervisor und Workloads
+- Klare Trennung zwischen Hypervisor und Diensten
 - Geeignet für produktive Dienste und Testumgebungen
 
 Neben produktiven Diensten sollte die Infrastruktur ausreichend Ressourcen für Experimente und neue Technologien bereitstellen.
@@ -37,7 +37,7 @@ Für eine private Infrastruktur standen die erforderlichen Lizenzkosten jedoch i
 
 Ein einzelner leistungsfähiger Server wäre die einfachste Lösung gewesen.
 
-Diese Architektur hätte jedoch einen zentralen Single Point of Failure geschaffen. Wartungsarbeiten oder Hardwareausfälle hätten sämtliche produktiven Dienste gleichzeitig betroffen.
+Diese Architektur hätte jedoch einen zentralen Single Point of Failure (SoP) geschaffen. Wartungsarbeiten oder Hardwareausfälle hätten sämtliche produktiven Dienste gleichzeitig betroffen.
 
 Für Testsysteme wäre dieser Kompromiss akzeptabel gewesen, für zentrale Infrastrukturkomponenten jedoch nicht.
 
@@ -47,17 +47,17 @@ Proxmox VE erfüllt für meine Anforderungen die wesentlichen Eigenschaften eine
 
 Entscheidend war dabei nicht die Anzahl der verfügbaren Funktionen, sondern die Möglichkeit, bewährte Architekturprinzipien aus Enterprise-Umgebungen auch im Homelab umzusetzen.
 
-Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage. ZFS bietet dabei Funktionen wie Snapshots, Integritätsprüfungen und bildet die Grundlage für die regelmäßige Replikation der virtuellen Maschinen. Ein separates QDevice stellt das Cluster-Quorum sicher und verhindert bei einem Zwei-Node-Cluster den Verlust des Quorums beim Ausfall eines Hosts. Ergänzt wird die Plattform durch einen Proxmox Backup Server auf der QNAP.
+Die Infrastruktur besteht aus einem Zwei-Node-Cluster mit lokalem ZFS-Storage. ZFS bietet dabei Funktionen wie Snapshots, Integritätsprüfungen und bildet die Grundlage für die regelmäßige automatische Replikation der virtuellen Maschinen. Ein separates QDevice dient als unabhängiger Witness und ermöglicht so, bei einem Zwei-Node-Cluster auch beim Ausfall eines Hosts das Quorum zu erhalten. Ergänzt wird die Plattform durch einen Proxmox Backup Server als virtuelle Maschine auf einem QNAP-NAS.
 
-Durch die regelmäßige Replikation stehen aktuelle Kopien der virtuellen Maschinen auf dem zweiten Host zur Verfügung. Dadurch lassen sich Wartungsarbeiten mit vergleichsweise kurzen Unterbrechungen durchführen, ohne auf Shared Storage angewiesen zu sein.
+Durch die ZFS-Replikation stehen aktuelle Kopien der virtuellen Maschinen auf beiden Hosts zur Verfügung. Dadurch lassen sich Wartungsarbeiten mit vergleichsweise kurzen Unterbrechungen durchführen, ohne auf Shared Storage oder Ceph angewiesen zu sein, da der damit verbundene zusätzliche Betriebsaufwand für meine Infrastruktur keinen ausreichenden Mehrwert bietet. Im Gegensatz zu einer Live Migration erfolgt das Verschieben virtueller Maschinen auf Grundlage der zuvor replizierten Daten.
 
 Besonders wichtig ist dabei die konsequente Trennung der Verantwortlichkeiten.
 
-In meiner Infrastruktur übernimmt Proxmox ausschließlich die Virtualisierungsschicht. Anwendungen werden grundsätzlich nicht auf dem Hypervisor betrieben, sondern in eigenen virtuellen Maschinen.
+In meiner Infrastruktur übernimmt Proxmox ausschließlich die Virtualisierungsschicht. Dienste werden grundsätzlich nicht auf dem Hypervisor betrieben, sondern in eigenen virtuellen Maschinen.
 
-Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Die Gründe für diese Entscheidung werden in der separaten Architekturentscheidung **„Warum Rocky Linux?“** beschrieben. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Der Lebenszyklus der Gastbetriebssysteme ist vom Lebenszyklus des Hypervisors getrennt, auch wenn Wartungsarbeiten am Host Migrationen oder geplante Neustarts der virtuellen Maschinen erfordern können.
+Als Gastbetriebssystem verwende ich standardmäßig Rocky Linux. Die Gründe für diese Entscheidung werden in der separaten Architekturentscheidung **„Warum Rocky Linux?“** beschrieben. Dadurch bleibt die Betriebsplattform meiner Dienste unabhängig vom eingesetzten Hypervisor. Der Lebenszyklus der Gastbetriebssysteme ist vom Lebenszyklus des Hypervisors getrennt, auch wenn Wartungsarbeiten am Host das geplante Verschieben oder geplante Neustarts der virtuellen Maschinen erfordern können.
 
-Für meine Infrastruktur verzichte ich bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, bieten mir jedoch eine stärkere Isolation gegenüber dem Hostsystem als Linux-Container und eine einheitliche Plattform für sämtliche Server.
+Für meine Infrastruktur verzichte ich bewusst auf Linux-Container. Virtuelle Maschinen benötigen zwar mehr Ressourcen, unterstützen jedoch mein Ziel einer einheitlichen Betriebsplattform und bieten mir eine stärkere Trennung vom Hypervisor.
 
 ## Nachteile
 
@@ -65,24 +65,22 @@ Auch diese Architektur bringt bewusste Kompromisse mit sich.
 
 - Zwei Hosts verursachen mehr Betriebs- und Wartungsaufwand als ein einzelner Server.
 - Virtuelle Maschinen benötigen mehr Ressourcen als Linux-Container.
-- Ein Zwei-Node-Cluster erreicht nicht die Ausfallsicherheit größerer Enterprise-Cluster.
+- Ein Zwei-Node-Cluster erreicht nicht die Ausfallsicherheit eines größeren Enterprise-Clusters.
 - Die Replikation dient der Verfügbarkeit und ersetzt keine Datensicherung. Diese Aufgabe übernimmt ein separater Proxmox Backup Server.
 
 Diese Nachteile sind für meine Anforderungen akzeptabel, da Wartbarkeit, Stabilität und Reproduzierbarkeit höher bewertet werden als eine möglichst ressourcensparende Infrastruktur.
 
 ## Entscheidung
 
-Proxmox VE bildet die Standardplattform für die Virtualisierung meiner Infrastruktur.
+Proxmox VE bildet die Standardplattform für die Virtualisierung in meiner Infrastruktur.
 
-Produktive Dienste werden ausschließlich als virtuelle Maschinen betrieben. Linux-Container verwende ich bewusst nicht, um eine einheitliche Betriebsplattform auf Basis von Rocky Linux beizubehalten und den Hypervisor klar von den Workloads zu trennen.
+Produktive Dienste werden ausschließlich als virtuelle Maschinen betrieben. Linux-Container verwende ich bewusst nicht, um eine einheitliche Betriebsplattform auf Basis von Rocky Linux beizubehalten und den Hypervisor klar von den Diensten zu trennen.
 
 Der Cluster ermöglicht es, zentrale Infrastrukturdienste auch während geplanter Wartungsarbeiten und beim Ausfall eines Hosts mit möglichst kurzen Unterbrechungen weiter zu betreiben.
 
-Dadurch lassen sich Dienste wie Pi-hole oder andere zentrale Infrastrukturkomponenten unabhängig von der zugrunde liegenden Hardware betreiben und Wartungsarbeiten planbar durchführen.
+Dadurch lassen sich Dienste wie Pi-hole oder andere zentrale Infrastrukturkomponenten unabhängig von der Hardware betreiben und Wartungsarbeiten planbar durchführen.
 
 ## Überprüfung der Entscheidung
-
-Architekturentscheidungen gelten immer im jeweiligen Kontext.
 
 Diese Entscheidung sollte überprüft werden, wenn
 
