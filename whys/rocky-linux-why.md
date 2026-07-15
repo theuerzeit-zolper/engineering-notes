@@ -18,7 +18,7 @@ Die neue Distribution sollte folgende Anforderungen erfüllen:
 
 - Langfristige Stabilität
 - Hohe Kompatibilität zu RHEL
-- Planbare Release- und Supportzyklen
+- Planbare Release-, Support- und Major-Upgrade-Zyklen
 - Enterprise-fähig
 - Große Community und umfangreiche Dokumentation
 - Kostenfrei
@@ -32,13 +32,13 @@ Die jeweils neuesten Softwareversionen waren kein entscheidendes Kriterium. Für
 
 Oracle Linux bot bereits eine vollständige RHEL-kompatible Enterprise-Distribution.
 
-Technisch sprach wenig dagegen. Aus strategischer Sicht wollte ich jedoch eine Lösung, die stärker von einer Community getragen wird und weniger von einem Unternehmen abhängig ist.
+Technisch sprach wenig gegen Oracle Linux und die Distribution erfüllte meine Anforderungen grundsätzlich. Für eine langfristige Standardplattform spielte jedoch auch die Governance des Projekts eine Rolle. Ich wollte eine Lösung, die stärker von einer Community getragen wird und weniger von den strategischen Entscheidungen eines einzelnen Unternehmens abhängt.
 
 ### AlmaLinux
 
 AlmaLinux entstand nahezu zeitgleich mit Rocky Linux und verfolgte ein ähnliches Ziel.
 
-Zum Zeitpunkt meiner Entscheidung befanden sich beide Projekte noch am Anfang. Letztlich fiel meine Wahl auf Rocky Linux, da mich die Ausrichtung und Organisation des Projekts mehr überzeugte.
+Als ich diese Entscheidung traf, befanden sich beide Projekte noch in einer frühen Entwicklungsphase. Letztlich fiel meine Wahl auf Rocky Linux, da mich die Ausrichtung und Organisation des Projekts mehr überzeugte.
 
 ## Warum Rocky Linux?
 
@@ -66,9 +66,10 @@ Rocky Linux bringt bewusst Kompromisse mit sich:
 
 - Softwarepakete sind häufig älter als bei anderen Distributionen.
 - Neue Funktionen stehen teilweise später zur Verfügung.
-- Das Ökosystem ist kleiner als beispielsweise bei Ubuntu.
+- Das Ökosystem ist kleiner als beispielsweise bei Ubuntu, insbesondere im Hinblick auf Community-Ressourcen und Software von Drittanbietern.
 
 Für klassische Infrastrukturserver sind diese Nachteile jedoch akzeptabel, da Stabilität und Vorhersehbarkeit wichtiger sind als die neuesten Softwareversionen.
+Insbesondere da "ältere" Softwareversionen nicht unsicherer oder schlechter, sondern in den meisten Fällen etablierter und stabiler bedeutet.
 
 ## Entscheidung
 
